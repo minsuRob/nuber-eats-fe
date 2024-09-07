@@ -11,6 +11,7 @@ import nuberLogo from "../images/logo.svg";
 import { Button } from "../components/button";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { isLoggedInVar } from "../apollo";
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -35,7 +36,8 @@ export const Login = () => {
     const {
       login: { ok, token },
     } = data;
-    if (ok) {
+    if (ok && token) {
+      isLoggedInVar(true);
       console.log(token);
     }
   };
@@ -65,14 +67,18 @@ export const Login = () => {
         <title>Login | Nuber Eats</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
-        <img src={nuberLogo} className="w-56 mb-10" />
+        <img src={nuberLogo} className="w-56 mb-10" alt="Nuber Eats" />
         <h4 className="w-full font-medium text-3xl mb-5">Welcom back</h4>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid gap-3 mt-5 w-full mb-5"
         >
           <input
-            ref={register({ required: "Email is required" })}
+            ref={register({
+              required: "Email is required",
+              pattern:
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            })}
             name="email"
             required
             type="email"
@@ -81,6 +87,9 @@ export const Login = () => {
           />
           {errors.email?.message && (
             <FormError errorMessage={errors.email?.message} />
+          )}
+          {errors.email?.type === "pattern" && (
+            <FormError errorMessage={"Please enter a valid email"} />
           )}
           <input
             ref={register({ required: "Password is required" })}
