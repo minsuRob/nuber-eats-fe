@@ -10,6 +10,7 @@ import {
   Switch,
 } from "react-router-dom";
 import { Restaurants } from "../pages/client/restaurants";
+import { Header } from "../components/header";
 
 const ClientRoutes = [
   <Route path="/" exact>
@@ -28,15 +29,16 @@ const ME_QUERY = gql`
 `;
 export const LoggedInRouter = () => {
   const { data, loading, error } = useQuery<meQuery>(ME_QUERY);
-  if (!data || loading || error) {
+  /*if (!data || loading || error) {
     return (
       <div className="justify-center h-screen items-center flex">
         <span className="font-medium text-xl tracking-wide">Loading...</span>
       </div>
     );
-  }
+  }*/
   return (
     <Router>
+      <Header />
       <Switch>
         <Redirect from="/potato" to="/" />
       </Switch>
