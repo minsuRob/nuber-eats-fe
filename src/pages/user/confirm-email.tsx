@@ -6,6 +6,7 @@ import {
 } from "../../__generated__/verifyEmail";
 import { useMe } from "../../hooks/useMe";
 import { verify } from "crypto";
+import { useHistory } from "react-router-dom";
 
 const VERIFY_EMAIL_MUTATION = gql`
   mutation verifyEmail($input: VerifyEmailInput!) {
@@ -19,6 +20,7 @@ const VERIFY_EMAIL_MUTATION = gql`
 export const ConfirmEmail = () => {
   const { data: userData } = useMe();
   const client = useApolloClient();
+  const history = useHistory();
   const onCompleted = (data: verifyEmail) => {
     const {
       verifyEmail: { ok },
@@ -29,13 +31,14 @@ export const ConfirmEmail = () => {
         id: `User:${userData.me.id}`,
         fragment: gql`
           fragment VerifiedUser on User {
-            verifed
+            verified
           }
         `,
         data: {
           verified: true,
         },
       });
+      history.push("/");
     }
   };
 
@@ -54,7 +57,7 @@ export const ConfirmEmail = () => {
         },
       },
     });
-  }, []);
+  }, [verifyEmail]);
   return (
     <div className="mt-52 flex flex-col items-center justify-center">
       <h2 className="text-lg mb-1 font-medium">Confirming email...</h2>
