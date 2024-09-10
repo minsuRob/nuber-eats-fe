@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
-import React from "react";
+import React, { useState } from "react";
 import { restaurantsPageQuery } from "../../__generated__/restaurantsPageQuery";
+import { Restaurant } from "../../components/restaurant";
 
 const RESTAURANTS_QUERY = gql`
   query restaurantsPageQuery {
@@ -34,8 +35,8 @@ const RESTAURANTS_QUERY = gql`
 `;
 
 export const Restaurants = () => {
+  const [page, setPage] = useState(1);
   const { data, loading } = useQuery<restaurantsPageQuery>(RESTAURANTS_QUERY);
-  console.log(data?.restaurants);
 
   return (
     <div>
@@ -46,11 +47,9 @@ export const Restaurants = () => {
           className="input rounded-md border-0 w-3/12"
         />
       </form>
-      {/* 
-        <div><div>
-        )} */}
+
       {!loading && (
-        <div className="max-w-screen-2xl mx-auto mt-8">
+        <div className="max-w-screen-2xl pb-20 mx-auto mt-8">
           <div className="flex justify-around max-w-sm mx-auto">
             {data?.allCategories.categories?.map((category) => (
               <div className="flex flex-col group items-center cursor-pointer">
@@ -64,18 +63,14 @@ export const Restaurants = () => {
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-10 mt-10">
+          <div className="grid grid-cols-3 gap-x-5 gap-y-10 mt-16">
             {data?.restaurants.results?.map((restaurant) => (
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${restaurant.coverImg})` }}
-                  className="bg-red-500 bg-cover bg-center mb-3 py-28"
-                ></div>
-                <h3 className="text-xl font-medium">{restaurant.name}</h3>
-                <span className="border-t-2 border-gray-200">
-                  {restaurant.category?.name}
-                </span>
-              </div>
+              <Restaurant
+                id={restaurant.id + ""}
+                coverImg={restaurant.coverImg}
+                name={restaurant.name}
+                categoryName={restaurant.category?.name}
+              />
             ))}
           </div>
         </div>
