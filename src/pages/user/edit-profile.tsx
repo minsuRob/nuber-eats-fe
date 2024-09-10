@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "../../components/button";
 import { useMe } from "../../hooks/useMe";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 export const EditProfile = () => {
   const { data: userData } = useMe();

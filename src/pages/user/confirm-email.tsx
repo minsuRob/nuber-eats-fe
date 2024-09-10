@@ -7,7 +7,7 @@ import {
 import { useMe } from "../../hooks/useMe";
 import { verify } from "crypto";
 import { useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const VERIFY_EMAIL_MUTATION = gql`
   mutation verifyEmail($input: VerifyEmailInput!) {
