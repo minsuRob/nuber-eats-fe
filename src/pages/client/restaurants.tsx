@@ -16,7 +16,7 @@ const RESTAURANTS_QUERY = gql`
       ok
       error
       categories {
-        ....CategoryParts
+        ...CategoryParts
       }
     }
     restaurants(input: $input) {
