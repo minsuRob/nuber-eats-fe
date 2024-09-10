@@ -75,6 +75,7 @@ export const Restaurants = () => {
         className="bg-gray-800 w-full py-40 items-center flex justify-center"
       >
         <input
+          ref={register({ required: true, min: 3 })}
           name="searchTerm"
           type="Search"
           placeholder="Search restaurants"
